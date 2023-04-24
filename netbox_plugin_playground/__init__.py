@@ -6,6 +6,5 @@ class NetboxPluginPlaygroundConfig(PluginConfig):
     description = 'Manage BGP Stuffs'
     version =  '0.01'
     base_url = 'netbox-plugin-playground'
-    min_version = '3.4.0'
 
 config = NetboxPluginPlaygroundConfig
