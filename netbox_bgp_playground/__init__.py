@@ -1,6 +1,6 @@
 from extras.plugins import PluginConfig
 
-class NetboxBGP(PluginConfig):
+class NetboxBGPPlaygroundConfig(PluginConfig):
     name =  'netbox_bgp_playground'
     verbose_name = 'Netbox BGP Playground'
     description = 'Manage BGP Stuffs'
@@ -8,4 +8,4 @@ class NetboxBGP(PluginConfig):
     base_url = 'bgp-playground'
     min_version = '3.4.0'
 
-config = NetboxBGPConfig
+config = NetboxBGPPlaygroundConfig
