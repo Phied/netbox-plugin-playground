@@ -21,6 +21,7 @@ class BgpCommunity(NetBoxModel):
 
 class Meta:
     ordering = ('name', 'index')
+    unique_together = ('name', 'index')
 
 def get_status_color(self):
     return ActionChoices.colors.get(self.status)
