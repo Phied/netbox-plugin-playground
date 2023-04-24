@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='netbox-bgp-playground',
+    name='netbox-plugin-playground',
     version='0.01',
     description='A BGP Playground Plugin',
     install_requires=[],
