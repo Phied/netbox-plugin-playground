@@ -1,7 +1,7 @@
 from netbox.api.viewsets import NetBoxModelViewSet
 
 from .. import filtersets, models
-from .serializers import BgpCommunitySerializer
+from .serializers import BgpCommunitySerializer, BgpCommunityGroupSerializer
 
 class BgpCommunityViewSet(NetBoxModelViewSet):
     queryset = models.BgpCommunity.objects.prefetch_related(
@@ -10,3 +10,10 @@ class BgpCommunityViewSet(NetBoxModelViewSet):
     serializer_class = BgpCommunitySerializer
     filterset_class = filtersets.BgpCommunityFilterSet
 
+class BgpCommunityGroupViewSet(NetBoxModelViewSet):
+    queryset = models.BgpCommunityGroup.objects.prefetch_related(
+        'devices', 'tags'
+    )
+
+    serializer_class = BgpCommunityGroupSerializer
+    filterset_class = filtersets.BgpCommunityGroupFilterSet

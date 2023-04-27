@@ -10,7 +10,21 @@ communitylist_buttons = [
     )
 ]
 
+communitygrouplist_buttons = [
+    PluginMenuButton(
+        link='plugins:netbox_bgp:bgpcommunitygroup_add',
+        title='Add',
+        icon_class='mdi mdi-plus-thick',
+        color=ButtonColorChoices.GREEN
+    )
+]
+
 menu_items = (
+    PluginMenuItem(
+        link='plugins:netbox_bgp:bgpcommunitygroup_list',
+        link_text='Community Groups',
+        buttons=communitygrouplist_buttons
+    ),
     PluginMenuItem(
         link='plugins:netbox_bgp:bgpcommunity_list',
         link_text='BGP Communities',

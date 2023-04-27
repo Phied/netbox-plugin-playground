@@ -14,7 +14,26 @@ class ActionChoices(ChoiceSet):
         ('reserved', 'Reserved', 'yellow')
     ]
 
+class BgpCommunityGroup(NetBoxModel):
+    name = models.CharField(max_length=100, blank=False)
+    devices = models.ForeignKey(to='dcim.Device', on_delete=models.PROTECT, related_name='+', blank=True, null=True)
+    #devices = models.ManyToManyField(to='dcim.Device', related_name='+', blank=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Community Groups"
+        ordering = ('name', )
+
+    def __str__(self):
+        return self.name
+    
+    # Set URL as defined in urls.py
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_bgp:bgpcommunitygroup', kwargs={'pk': self.pk})
+
 class BgpCommunity(NetBoxModel):
+    #parentgroup = models.ForeignKey(to=BgpCommunityGroup,related_name='Group',on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name="Community Group")
+    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='+', blank=True, verbose_name="Community Group")
     name = models.CharField(max_length=100, blank=False)
     community = models.CharField(max_length=64, validators=[RegexValidator(r'\d+:\d+')], blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)

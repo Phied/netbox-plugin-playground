@@ -25,3 +25,28 @@ class BgpCommunityEditView(generic.ObjectEditView):
 class BgpCommunityDeleteView(generic.ObjectDeleteView):
     queryset = models.BgpCommunity.objects.all()
 
+
+
+
+# Create detail view
+class BgpCommunityGroupView(generic.ObjectView):
+    queryset = models.BgpCommunityGroup.objects.all()
+
+# Create list view
+class BgpCommunityGroupListView(generic.ObjectListView):
+    queryset = models.BgpCommunityGroup.objects.all()
+    table = tables.BgpCommunityGroupTable
+
+    # Added to create filter functionality
+    filterset = filtersets.BgpCommunityGroupFilterSet
+    filterset_form = forms.BgpCommunityGroupFilterForm
+
+# Create edit view
+class BgpCommunityGroupEditView(generic.ObjectEditView):
+    queryset = models.BgpCommunityGroup.objects.all()
+    form = forms.BgpCommunityGroupForm
+
+# Create delete view
+class BgpCommunityGroupDeleteView(generic.ObjectDeleteView):
+    queryset = models.BgpCommunityGroup.objects.all()
+

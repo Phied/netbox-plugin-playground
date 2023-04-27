@@ -1,27 +1,51 @@
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
-from utilities.forms.fields import DynamicModelChoiceField
+from utilities.forms.fields import DynamicModelChoiceField, DynamicModelMultipleChoiceField
 from tenancy.models import Tenant
-from .models import BgpCommunity, ActionChoices
+from dcim.models import Device
+from .models import BgpCommunity, BgpCommunityGroup, ActionChoices
 
 from django import forms
 
+# Create normal form
 class BgpCommunityForm(NetBoxModelForm):
     # Replaces tenant below with what netbox has for tenants
     tenant = DynamicModelChoiceField(queryset=Tenant.objects.all(), required=False)
+    parentgroup = DynamicModelMultipleChoiceField(queryset=BgpCommunityGroup.objects.all(), label="Parent Community Group(s)")
 
     class Meta:
         model = BgpCommunity
-        fields = ('name', 'community', 'description', 'status', 'tenant')
+        fields = ('name', 'community', 'parentgroup', 'description', 'status', 'tenant')
 
 # Created to enable filtering on fields!
 class BgpCommunityFilterForm(NetBoxModelFilterSetForm):
     model = BgpCommunity
     bgpcommunity_list = forms.ModelMultipleChoiceField(
         queryset=BgpCommunity.objects.all(),
-        required=False
+        required=False,
+        label="Community"
     )
 
     action = forms.MultipleChoiceField(
         choices=ActionChoices,
         required=False
+    )
+
+# Create bgpcommunitygroup form!
+class BgpCommunityGroupForm(NetBoxModelForm):
+    devices = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
+    #devices = DynamicModelMultipleChoiceField(queryset=Device.objects.all(), required=False, label="Device(s)")
+
+    class Meta:
+        model = BgpCommunityGroup
+        fields = ('name','description','devices')
+
+
+# Create bgp filter form!
+class BgpCommunityGroupFilterForm(NetBoxModelFilterSetForm):
+    model = BgpCommunityGroup
+
+    bgpcommunity_group = forms.ModelMultipleChoiceField(
+        queryset=BgpCommunityGroup.objects.all(),
+        required=False,
+        label="BGP Community Group"
     )
