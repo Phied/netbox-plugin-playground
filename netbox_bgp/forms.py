@@ -9,12 +9,12 @@ from django import forms
 # Create normal form
 class BgpCommunityForm(NetBoxModelForm):
     # Replaces tenant below with what netbox has for tenants
-    tenant = DynamicModelChoiceField(queryset=Tenant.objects.all(), required=False)
+    #tenant = DynamicModelChoiceField(queryset=Tenant.objects.all(), required=False)
     parentgroup = DynamicModelMultipleChoiceField(queryset=BgpCommunityGroup.objects.all(), label="Parent Community Group(s)")
 
     class Meta:
         model = BgpCommunity
-        fields = ('name', 'community', 'parentgroup', 'description', 'status', 'tenant')
+        fields = ('name', 'community', 'parentgroup', 'description', 'status')
 
 # Created to enable filtering on fields!
 class BgpCommunityFilterForm(NetBoxModelFilterSetForm):
@@ -32,12 +32,13 @@ class BgpCommunityFilterForm(NetBoxModelFilterSetForm):
 
 # Create bgpcommunitygroup form!
 class BgpCommunityGroupForm(NetBoxModelForm):
-    devices = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
-    #devices = DynamicModelMultipleChoiceField(queryset=Device.objects.all(), required=False, label="Device(s)")
+    #devices = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
+    devices_list = DynamicModelMultipleChoiceField(queryset=Device.objects.all(), required=False, label="Device(s)")
+    #community_children = DynamicModelMultipleChoiceField(queryset=BgpCommunity.objects.all, required=False, label="Child Community(s)")
 
     class Meta:
         model = BgpCommunityGroup
-        fields = ('name','description','devices')
+        fields = ('name','description','devices_list','comments','tags')
 
 
 # Create bgp filter form!

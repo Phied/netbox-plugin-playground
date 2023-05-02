@@ -30,9 +30,10 @@ class BgpCommunitySerializer(NetBoxModelSerializer):
 
     class Meta:
         model = BgpCommunity
-        fields = (
-            'id', 'display', 'url', 'name', 'community', 'parentgroup', 'description', 'status', 'tenant', 'tags', 'custom_fields', 'created', 'last_updated',
-        )
+        fields = '__all__'
+        #fields = (
+        #    'id', 'display', 'url', 'name', 'community', 'parentgroup', 'description', 'status', 'tenant', 'tags', 'custom_fields', 'created', 'last_updated',
+        #)
 
 # Create nested group serializer
 class NestedBgpCommunityGroupSerializer(WritableNestedSerializer):
@@ -49,12 +50,13 @@ class BgpCommunityGroupSerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='plugins-api:netbox_bgp-api:bgpcommunitygroup-detail'
     )
-    
-    # Modify device to use imported info above:
-    devices = NestedDeviceSerializer(required=False, allow_null=True)
+   
+    # Modify device to use imported info above.  USE MANY=TRUE OR IT BREAKS!
+    devices_list = NestedDeviceSerializer(required=False, allow_null=True, many=True)
 
     class Meta:
         model = BgpCommunityGroup
+        #fields = '__all__'
         fields = (
-            'id', 'display', 'url', 'name', 'devices', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
+            'id', 'display', 'url', 'name', 'devices_list', 'description', 'comments', 'tags', 'custom_fields', 'created', 'last_updated',
         )

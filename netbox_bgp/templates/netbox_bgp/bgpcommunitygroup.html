@@ -1,4 +1,5 @@
 {% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
 
 {% block content %}
   <div class="row mb-3">
@@ -12,12 +13,21 @@
               <td>{{ object.name }}</td>
             </tr>
             <tr>
+              <!-- Must use .all because I can't iterate it like I normall would -->
               <th scope="row">Devices</th>
-              <td>{{ object.devices }}</td>
+              <td> {% for device in object.devices_list.all %}
+                <a href="{{ device.get_absolute_url }}">{{ device }}</a>{% if not forloop.last %}<br />{% endif %}
+             {% empty %}
+                &mdash;
+             {% endfor %}</td>
+            </tr>
+            <tr>
+              <th scope="row">Community Count</th>
+              <td>{{ object.communities.count }}</td>
             </tr>
             <tr>
               <th scope="row">Description</th>
-              <td>{{ object.status }}</td>
+              <td>{{ object.description }}</td>
             </tr>
           </table>
         </div>
@@ -27,6 +37,16 @@
     <div class="col col-md-6">
       {% include 'inc/panels/tags.html' %}
       {% include 'inc/panels/comments.html' %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-md-12">
+      <div class="card">
+        <h5 class="card-header">Attached Communities</h5>
+        <div class="card-body table-responsive">
+          {% render_table communities_table %}
+        </div>
+      </div>
     </div>
   </div>
 {% endblock content %}

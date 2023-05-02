@@ -9,20 +9,20 @@ class ActionChoices(ChoiceSet):
     key = 'BgpCommunity.status'
 
     CHOICES = [
-        ('enabled', 'Enabled', 'green'),
-        ('disabled', 'Disabled', 'red'),
-        ('reserved', 'Reserved', 'yellow')
+        ('active', 'Active', 'green'),
+        ('deprecated', 'Depricated', 'red')
     ]
 
 class BgpCommunityGroup(NetBoxModel):
     name = models.CharField(max_length=100, blank=False)
-    devices = models.ForeignKey(to='dcim.Device', on_delete=models.PROTECT, related_name='+', blank=True, null=True)
-    #devices = models.ManyToManyField(to='dcim.Device', related_name='+', blank=True)
+    #Make this a many to many relationship to natvie "Device" field.
+    devices_list = models.ManyToManyField(to='dcim.Device', verbose_name="Device List")
     description = models.CharField(max_length=100, blank=True, null=True)
+    comments = models.TextField(blank=True)
 
     class Meta:
         verbose_name_plural = "Community Groups"
-        ordering = ('name', )
+        ordering = ('name', 'id')
 
     def __str__(self):
         return self.name
@@ -33,12 +33,13 @@ class BgpCommunityGroup(NetBoxModel):
 
 class BgpCommunity(NetBoxModel):
     #parentgroup = models.ForeignKey(to=BgpCommunityGroup,related_name='Group',on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name="Community Group")
-    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='+', blank=True, verbose_name="Community Group")
+    # Using related name here allow us to get the count later on by calling that name!
+    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='communities', blank=True, verbose_name="Community Group(s)")
     name = models.CharField(max_length=100, blank=False)
     community = models.CharField(max_length=64, validators=[RegexValidator(r'\d+:\d+')], blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)
-    status = models.CharField(max_length=30, choices=ActionChoices, null=False, blank=False)
-    tenant = models.ForeignKey(to='tenancy.Tenant', on_delete=models.PROTECT, related_name='+', blank=True, null=True)
+    status = models.CharField(max_length=30, choices=ActionChoices, null=False, blank=True)
+    #tenant = models.ForeignKey(to='tenancy.Tenant', on_delete=models.PROTECT, related_name='+', blank=True, null=True)
     
     class Meta:
         verbose_name_plural = "Communities"

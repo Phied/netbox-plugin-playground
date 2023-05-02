@@ -1,5 +1,5 @@
 from netbox.search import SearchIndex, register_search
-from .models import BgpCommunity
+from .models import BgpCommunity, BgpCommunityGroup
 
 # When modifying don't forget to reindex!  Objects created after will be indexed automatically
 # manage.py reindex netbox_bgp
@@ -13,4 +13,13 @@ class BgpCommunityIndex(SearchIndex):
     fields = (
         ('name', 100),
         ('community', 100),
+    )
+
+@register_search
+class BgpCommunityGroupIndex(SearchIndex):
+    model = BgpCommunityGroup
+
+    # Fields we care about searching for:
+    fields = (
+        ('name', 100),
     )

@@ -22,7 +22,7 @@ communitygrouplist_buttons = [
 menu_items = (
     PluginMenuItem(
         link='plugins:netbox_bgp:bgpcommunitygroup_list',
-        link_text='Community Groups',
+        link_text='BGP Community Groups',
         buttons=communitygrouplist_buttons
     ),
     PluginMenuItem(

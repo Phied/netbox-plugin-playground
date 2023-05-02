@@ -5,14 +5,14 @@ from .serializers import BgpCommunitySerializer, BgpCommunityGroupSerializer
 
 class BgpCommunityViewSet(NetBoxModelViewSet):
     queryset = models.BgpCommunity.objects.prefetch_related(
-        'tenant','tags'
+        'tags'
     )
     serializer_class = BgpCommunitySerializer
     filterset_class = filtersets.BgpCommunityFilterSet
 
 class BgpCommunityGroupViewSet(NetBoxModelViewSet):
     queryset = models.BgpCommunityGroup.objects.prefetch_related(
-        'devices', 'tags'
+        'tags'
     )
 
     serializer_class = BgpCommunityGroupSerializer

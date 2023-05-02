@@ -1,5 +1,6 @@
 from netbox.views import generic
 from . import forms, models, tables, filtersets
+from django.db.models import Count
 
 # Need to create 4 views: detail, list, edit, delete
 
@@ -32,9 +33,21 @@ class BgpCommunityDeleteView(generic.ObjectDeleteView):
 class BgpCommunityGroupView(generic.ObjectView):
     queryset = models.BgpCommunityGroup.objects.all()
 
+    # Need to add this function to call it in our template later on so we get a list of the communities on the parent
+    def get_extra_context(self, request, instance):       
+        table = tables.BgpCommunityTable(instance.communities.all())
+        table.configure(request)
+
+        return {
+            'communities_table': table
+        }
+
 # Create list view
 class BgpCommunityGroupListView(generic.ObjectListView):
-    queryset = models.BgpCommunityGroup.objects.all()
+    #queryset = models.BgpCommunityGroup.objects.all()
+    queryset = models.BgpCommunityGroup.objects.annotate(
+        community_count=Count('communities')
+    )
     table = tables.BgpCommunityGroupTable
 
     # Added to create filter functionality
