@@ -34,7 +34,7 @@ class BgpCommunityGroup(NetBoxModel):
 class BgpCommunity(NetBoxModel):
     #parentgroup = models.ForeignKey(to=BgpCommunityGroup,related_name='Group',on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name="Community Group")
     # Using related name here allow us to get the count later on by calling that name!
-    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='communities', blank=True, verbose_name="Community Group(s)")
+    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='communities', blank=True, verbose_name="Parent Community Group(s)")
     name = models.CharField(max_length=100, blank=False)
     community = models.CharField(max_length=64, validators=[RegexValidator(r'\d+:\d+')], blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)

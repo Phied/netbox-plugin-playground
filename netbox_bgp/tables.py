@@ -26,11 +26,12 @@ class BgpCommunityGroupTable(NetBoxTable):
 
     # Apply rendering template to our device column!
     devices_list = tables.TemplateColumn(
-        template_code=COL_DEVICES
+        template_code=COL_DEVICES,
+        verbose_name="Devices Attached to Community Group"
     )
 
     #Attempt to get count of communities under this group
-    community_count = tables.Column(verbose_name="Community Count")
+    community_count = tables.Column(verbose_name="Child Communities")
 
     # Create link for the Group name
     name = tables.Column(
@@ -56,7 +57,8 @@ class BgpCommunityTable(NetBoxTable):
     )
 
     parentgroup = tables.TemplateColumn(
-        template_code=COL_COMMUNITIES
+        template_code=COL_COMMUNITIES,
+        verbose_name="Parent Community Group(s)"
     )
 
     community = tables.Column(
