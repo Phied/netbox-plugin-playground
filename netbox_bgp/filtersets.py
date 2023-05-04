@@ -5,7 +5,7 @@ class BgpCommunityFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = BgpCommunity
-        fields = ('name', 'community', 'parentgroup', 'description', 'status')
+        fields = ('name', 'community', 'parentgroup', 'devices_list', 'description', 'status')
 
         def search(self, queryset, name, value):
             return queryset.filter(description__icontains=value)

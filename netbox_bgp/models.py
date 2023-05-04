@@ -2,7 +2,7 @@ from netbox.models import NetBoxModel
 from django.db import models
 from utilities.choices import ChoiceSet
 from django.urls import reverse
-from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
+from django.core.validators import RegexValidator
 
 
 class ActionChoices(ChoiceSet):
@@ -15,6 +15,7 @@ class ActionChoices(ChoiceSet):
 
 class BgpCommunityGroup(NetBoxModel):
     name = models.CharField(max_length=100, blank=False)
+    #child_communities = models.ManyToManyField(to=BgpCommunity, related_name='childcommunities', verbose_name="Community(s)")
     #Make this a many to many relationship to natvie "Device" field.
     devices_list = models.ManyToManyField(to='dcim.Device', verbose_name="Device List")
     description = models.CharField(max_length=100, blank=True, null=True)
@@ -34,7 +35,8 @@ class BgpCommunityGroup(NetBoxModel):
 class BgpCommunity(NetBoxModel):
     #parentgroup = models.ForeignKey(to=BgpCommunityGroup,related_name='Group',on_delete=models.DO_NOTHING, blank=True, null=True, verbose_name="Community Group")
     # Using related name here allow us to get the count later on by calling that name!
-    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='communities', blank=True, verbose_name="Parent Community Group(s)")
+    parentgroup = models.ManyToManyField(to=BgpCommunityGroup, related_name='communities', verbose_name="Parent Community Group(s)")
+    devices_list = models.ManyToManyField(to='dcim.Device', verbose_name="Device List")
     name = models.CharField(max_length=100, blank=False)
     community = models.CharField(max_length=64, validators=[RegexValidator(r'\d+:\d+')], blank=False, null=False)
     description = models.CharField(max_length=100, blank=True, null=True)

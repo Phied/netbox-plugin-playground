@@ -2,8 +2,9 @@ from netbox.views import generic
 from . import forms, models, tables, filtersets
 from django.db.models import Count
 
-# Need to create 4 views: detail, list, edit, delete
+# Need to create 4 views at minimum: detail, list, edit, delete
 
+# Regular communities here!
 # Create detail view
 class BgpCommunityView(generic.ObjectView):
     queryset = models.BgpCommunity.objects.all()
@@ -22,13 +23,31 @@ class BgpCommunityEditView(generic.ObjectEditView):
     queryset = models.BgpCommunity.objects.all()
     form = forms.BgpCommunityForm
 
+# Bulk Edit View
+class BgpCommunityBulkEditView(generic.BulkEditView):
+    queryset = models.BgpCommunity.objects.all()
+    filterset = filtersets.BgpCommunityFilterSet
+    table = tables.BgpCommunityTable
+    form = forms.BgpCommunityBulkEditForm
+
+# Create import view
+#class BgpCommunityImportView(generic.ObjectImportView):
+#    queryset = models.BgpCommunity.objects.all()
+#    form = forms.BgpCommunityImportForm
+#    table = tables.BgpCommunityTable
+
 # Create delete view
 class BgpCommunityDeleteView(generic.ObjectDeleteView):
     queryset = models.BgpCommunity.objects.all()
 
+# Create bulk delete view
+class BgpCommunityBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.BgpCommunity.objects.all()
+    table = tables.BgpCommunityTable
 
 
 
+# Community Groups here!
 # Create detail view
 class BgpCommunityGroupView(generic.ObjectView):
     queryset = models.BgpCommunityGroup.objects.all()
@@ -59,7 +78,19 @@ class BgpCommunityGroupEditView(generic.ObjectEditView):
     queryset = models.BgpCommunityGroup.objects.all()
     form = forms.BgpCommunityGroupForm
 
+# Bulk Edit View
+class BgpCommunityGroupBulkEditView(generic.BulkEditView):
+    queryset = models.BgpCommunityGroup.objects.all()
+    filterset = filtersets.BgpCommunityGroupFilterSet
+    table = tables.BgpCommunityGroupTable
+    form = forms.BgpCommunityGroupBulkEditForm
+
+
 # Create delete view
 class BgpCommunityGroupDeleteView(generic.ObjectDeleteView):
     queryset = models.BgpCommunityGroup.objects.all()
 
+# Create bulk delete view
+class BgpCommunityGroupBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.BgpCommunityGroup.objects.all()
+    table = tables.BgpCommunityGroupTable

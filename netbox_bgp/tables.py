@@ -56,6 +56,13 @@ class BgpCommunityTable(NetBoxTable):
         linkify=True
     )
 
+    # Apply rendering template to our device column in list view
+    devices_list = tables.TemplateColumn(
+        template_code=COL_DEVICES,
+        verbose_name="Devices Attached to Community"
+    )
+
+    # Apply rendering template to our community column in list view
     parentgroup = tables.TemplateColumn(
         template_code=COL_COMMUNITIES,
         verbose_name="Parent Community Group(s)"
@@ -68,5 +75,5 @@ class BgpCommunityTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = BgpCommunity
         # pk and actions columns render checkbox selectors for each row.
-        fields = ('pk','name', 'parentgroup', 'community', 'description', 'status', 'id', 'actions')
-        default_columns = ('name', 'community', 'parentgroup' 'description', 'status', 'actions')
+        fields = ('pk','name', 'parentgroup', 'community', 'devices_list', 'description', 'status', 'id', 'actions')
+        default_columns = ('name', 'community', 'parentgroup', 'devices_list', 'description', 'status', 'actions')
