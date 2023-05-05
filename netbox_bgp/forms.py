@@ -1,5 +1,5 @@
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm, NetBoxModelBulkEditForm, NetBoxModelImportForm
-from utilities.forms.fields import DynamicModelChoiceField, DynamicModelMultipleChoiceField
+from utilities.forms.fields import DynamicModelChoiceField, DynamicModelMultipleChoiceField, CSVChoiceField, CSVModelChoiceField
 from tenancy.models import Tenant
 from dcim.models import Device
 from django.core.validators import RegexValidator
@@ -17,23 +17,20 @@ class BgpCommunityForm(NetBoxModelForm):
         model = BgpCommunity
         fields = ('name', 'community', 'parentgroup', 'devices_list', 'description', 'status')
 
-# Attempted import form
-# GET THIS LATER!!!!
+# Our Import form
 class BgpCommunityImportForm(NetBoxModelImportForm):
-    
-    #name = forms.CharField(max_length=100)
-    ##community = forms.CharField(max_length=64, validators=[RegexValidator(r'\d+:\d+')])
-    #description = forms.CharField(max_length=100)
-    #status = forms.CharField(max_length=30)
-    #parentgroup = DynamicModelMultipleChoiceField(queryset=BgpCommunityGroup.objects.all(), required=False, label="Parent Community Group(s)")
-    #devices_list = DynamicModelMultipleChoiceField(queryset=Device.objects.all(), required=False, label="Device(s)")
+    #Unable to import these at current.  Netbox freaks out on CSV with many-many field types
+    #parentgroup = DynamicModelMultipleChoiceField(queryset=BgpCommunityGroup.objects.all(), required=False, label="Parent communities that have this as a child.")
+    #devices_list = DynamicModelMultipleChoiceField(queryset=Device.objects.all(), required=False, label="Device(s) community has been configured on")
+    status = forms.CharField(max_length=30, required=False, help_text="Options are Active or Depricated")
+    name = forms.CharField(help_text="Name to identify community")
+    community = forms.CharField(help_text="Community String in community syntax.  Ex: 65000:001")
+    description = forms.CharField(required=False, help_text="Brief description of what the community is used for.")
 
     class Meta:
         model = BgpCommunity
-        fields = ('name', 'community', 'parentgroup', 'devices_list', 'description', 'status')
-
-
-
+        fields = ('name', 'community', 'status', 'description')
+    
 
 # Our bulk edit form!
 class BgpCommunityBulkEditForm(NetBoxModelBulkEditForm):
@@ -69,6 +66,8 @@ class BgpCommunityFilterForm(NetBoxModelFilterSetForm):
     )
 
 
+# BGP Community Group Form Stuff below!
+
 # Create bgpcommunitygroup form!
 class BgpCommunityGroupForm(NetBoxModelForm):
     #devices = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
@@ -98,3 +97,14 @@ class BgpCommunityGroupFilterForm(NetBoxModelFilterSetForm):
         required=False,
         label="BGP Community Group"
     )
+
+# Our Import form
+class BgpCommunityGroupImportForm(NetBoxModelImportForm):
+
+    name = forms.CharField(help_text="Name to identify community")
+    description = forms.CharField(required=False, help_text="Brief description of what the community is used for.")
+
+    class Meta:
+        model = BgpCommunityGroup
+        fields = ('name', 'description')
+    

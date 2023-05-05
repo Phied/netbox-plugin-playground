@@ -22,6 +22,7 @@ class BgpCommunityListView(generic.ObjectListView):
 class BgpCommunityEditView(generic.ObjectEditView):
     queryset = models.BgpCommunity.objects.all()
     form = forms.BgpCommunityForm
+    default_return_url = "plugins:netbox_bgp:bgpcommunity_list"
 
 # Bulk Edit View
 class BgpCommunityBulkEditView(generic.BulkEditView):
@@ -30,11 +31,12 @@ class BgpCommunityBulkEditView(generic.BulkEditView):
     table = tables.BgpCommunityTable
     form = forms.BgpCommunityBulkEditForm
 
-# Create import view
-#class BgpCommunityImportView(generic.ObjectImportView):
-#    queryset = models.BgpCommunity.objects.all()
-#    form = forms.BgpCommunityImportForm
-#    table = tables.BgpCommunityTable
+# Create import view - notice it's model_form and not form like the others
+class BgpCommunityImportView(generic.BulkImportView):
+    queryset = models.BgpCommunity.objects.all()
+    model_form = forms.BgpCommunityImportForm
+    table = tables.BgpCommunityTable
+    default_return_url = "plugins:netbox_bgp:bgpcommunity_list"
 
 # Create delete view
 class BgpCommunityDeleteView(generic.ObjectDeleteView):
@@ -44,6 +46,7 @@ class BgpCommunityDeleteView(generic.ObjectDeleteView):
 class BgpCommunityBulkDeleteView(generic.BulkDeleteView):
     queryset = models.BgpCommunity.objects.all()
     table = tables.BgpCommunityTable
+    default_return_url = "plugins:netbox_bgp:bgpcommunity_list"
 
 
 
@@ -77,6 +80,14 @@ class BgpCommunityGroupListView(generic.ObjectListView):
 class BgpCommunityGroupEditView(generic.ObjectEditView):
     queryset = models.BgpCommunityGroup.objects.all()
     form = forms.BgpCommunityGroupForm
+    default_return_url = "plugins:netbox_bgp:bgpcommunitygroup_list"
+
+# Create import view - notice it's model_form and not form like the others
+class BgpCommunityGroupImportView(generic.BulkImportView):
+    queryset = models.BgpCommunityGroup.objects.all()
+    model_form = forms.BgpCommunityGroupImportForm
+    table = tables.BgpCommunityGroupTable
+    default_return_url = "plugins:netbox_bgp:bgpcommunitygroup_list"
 
 # Bulk Edit View
 class BgpCommunityGroupBulkEditView(generic.BulkEditView):
@@ -89,8 +100,10 @@ class BgpCommunityGroupBulkEditView(generic.BulkEditView):
 # Create delete view
 class BgpCommunityGroupDeleteView(generic.ObjectDeleteView):
     queryset = models.BgpCommunityGroup.objects.all()
+    default_return_url = "plugins:netbox_bgp:bgpcommunitygroup_list"
 
 # Create bulk delete view
 class BgpCommunityGroupBulkDeleteView(generic.BulkDeleteView):
     queryset = models.BgpCommunityGroup.objects.all()
     table = tables.BgpCommunityGroupTable
+    default_return_url = "plugins:netbox_bgp:bgpcommunitygroup_list"
